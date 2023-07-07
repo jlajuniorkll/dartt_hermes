@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "762443333409",
+    "project_id": "dartt-hermes",
+    "storage_bucket": "dartt-hermes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762443333409:android:ed6267b5453d9a0a5bc860",
+        "android_client_info": {
+          "package_name": "com.example.dartt_hermes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762443333409-b32pqh2jqahhsscub08aib117ljm4ld3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLc7vMoRNpKXXw8BJ8QPv2nQh2mfxcxLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762443333409-b32pqh2jqahhsscub08aib117ljm4ld3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762443333409-4leivvjo74hor0qrh9nnn7a7bd2eevn1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.darttHermes.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
