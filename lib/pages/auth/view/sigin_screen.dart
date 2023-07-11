@@ -16,11 +16,12 @@ class SignInScreen extends StatelessWidget {
     // final userResult = Get.find<UserController>();
     final sizeWidth = MediaQuery.of(context).size.width * 0.8;
     final sizeWidthWeb = MediaQuery.of(context).size.width * 0.6;
-    final sizeHeight = MediaQuery.of(context).size.height * 0.6;
     final isMobile = (sizeWidth <= 800.0);
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
                 colors: [
@@ -35,21 +36,20 @@ class SignInScreen extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Container(
-                      height: sizeHeight,
-                      width: isMobile ? sizeWidth : sizeWidthWeb,
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(45),
-                              bottomRight: Radius.circular(45))),
+              child: Container(
+                width: isMobile ? sizeWidth : sizeWidthWeb,
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(45),
+                        bottomRight: Radius.circular(45))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.max,
@@ -173,12 +173,15 @@ class SignInScreen extends StatelessWidget {
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 32,
                           )
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

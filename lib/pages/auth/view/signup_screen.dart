@@ -1,22 +1,21 @@
-import 'package:dartt_hermes/common/appname_widget.dart';
-import 'package:dartt_hermes/common/custom_textfield.dart';
+import 'package:dartt_hermes/pages/auth/controller/signin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
-  // final utilServices = UtilsServices();
-  // final userController = Get.find<UserController>();
+  final controller = Get.find<SigninController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final sizeWidth = MediaQuery.of(context).size.width * 0.9;
-    final sizeWidthWeb = MediaQuery.of(context).size.width * 0.7;
-    final isMobile = (sizeWidth <= 800.0);
     return Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text('Cadastre-se'),
+          centerTitle: true,
+        ),
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -29,128 +28,49 @@ class SignUpScreen extends StatelessWidget {
                 stops: [0.0, 1.0],
                 tileMode: TileMode.clamp),
           ),
-          child: Align(
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Positioned(
-                      top: 10,
-                      left: 10,
-                      child: SafeArea(
-                          child: IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
-                              )))),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        child: Text(
-                          'Cadastre-se!',
-                          style: TextStyle(color: Colors.white, fontSize: 24),
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Container(
-                          height: 600,
-                          width: isMobile ? sizeWidth : sizeWidthWeb,
-                          padding: const EdgeInsets.symmetric(horizontal: 32),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(45),
-                                  bottomRight: Radius.circular(45))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 24),
-                                child: AppNameWidget(
-                                  greenTitleColor: Colors.black,
-                                  redTitleColor: Colors.black,
-                                  textSize: 40,
-                                ),
-                              ),
-                              const CustomTextField(
-                                icon: Icons.person,
-                                label: 'Nome',
-                                /*onSaved: ((newValue) =>
-                                    userController.usuario.name = newValue),
-                                validator: nameValidator*/
-                              ),
-                              const CustomTextField(
-                                icon: Icons.document_scanner,
-                                /*onSaved: ((newValue) =>
-                                      userController.usuario.cpf = newValue),
-                                  inputFormatters: [utilServices.cpfFormatter],*/
-                                label: 'CPF',
-                                textInputType: TextInputType
-                                    .number, /*validator: cpfValidator*/
-                              ),
-                              const CustomTextField(
-                                icon: Icons.email,
-                                label: 'Email',
-                                /*onSaved: ((newValue) =>
-                                    userController.usuario.email = newValue),
-                                autCorrect: false,
-                                textInputType: TextInputType.emailAddress,
-                                validator: emailValidator,*/
-                              ),
-                              const CustomTextField(
-                                icon: Icons.lock,
-                                label: 'Senha',
-                                isSecret: true,
-                                /*onSaved: ((newValue) =>
-                                    userController.usuario.password = newValue),
-                                validator: senhaValidator*/
-                              ),
-                              const CustomTextField(
-                                icon: Icons.lock_outline,
-                                label: 'Repita a Senha',
-                                isSecret: true,
-                                /*onSaved: ((newValue) => userController
-                                    .usuario.confirmPassword = newValue),
-                                validator: senhaValidator,*/
-                              ),
-                              SizedBox(
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    /*if (_formKey.currentState!.validate()) {
-                                      userController.setTipoUsuario('Cliente');
-                                      _formKey.currentState!.save();
-                                      await userController.addUser(signinForm: true);
-                                    }*/
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18))),
-                                  child: const Text(
-                                    'Cadastrar',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Obx(() => Stepper(
+                currentStep: controller.currentStep.value,
+                onStepContinue: () {
+                  if (controller.currentStep.value == buildStep().length) {
+                    // TODO: ENVIA DADOS FIREBASE
+                  } else {
+                    controller.currentStep.value++;
+                  }
+                },
+                onStepCancel: () => controller.currentStep.value == 0
+                    ? null
+                    : controller.currentStep.value--,
+                type: StepperType.horizontal,
+                steps: buildStep())),
           ),
         ));
+  }
+
+  List<Step> buildStep() {
+    return <Step>[
+      Step(
+          title: const Text('Dados Pessoais'),
+          content: Container(
+            height: 100,
+            color: Colors.red,
+          ),
+          isActive: controller.currentStep.value >= 0),
+      Step(
+          title: const Text('Endereco'),
+          content: Container(
+            height: 100,
+            color: Colors.green,
+          ),
+          isActive: controller.currentStep.value >= 1),
+      Step(
+          title: const Text('Confirmação'),
+          content: Container(
+            height: 100,
+            color: Colors.blue,
+          ),
+          isActive: controller.currentStep.value >= 2),
+    ];
   }
 }

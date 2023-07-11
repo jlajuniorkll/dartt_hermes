@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'GDS',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: CustomColors.customSwatchColor,
-        ),
+        primarySwatch: CustomColors.customSwatchColor,
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: PageRoutes.signin,
