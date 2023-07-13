@@ -1,7 +1,9 @@
 import 'package:dartt_hermes/common/appname_widget.dart';
 import 'package:dartt_hermes/common/custom_textfield.dart';
 import 'package:dartt_hermes/config/custom_colors.dart';
+import 'package:dartt_hermes/models/cliente.dart';
 import 'package:dartt_hermes/page_routes/app_routes.dart';
+import 'package:dartt_hermes/pages/auth/controller/signin_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +15,7 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final userResult = Get.find<UserController>();
+    final userResult = Get.find<SigninController>();
     final sizeWidth = MediaQuery.of(context).size.width * 0.8;
     final sizeWidthWeb = MediaQuery.of(context).size.width * 0.6;
     final isMobile = (sizeWidth <= 800.0);
@@ -80,18 +82,17 @@ class SignInScreen extends StatelessWidget {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () async {
-                                /*if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   final result = await userResult.signIn(
-                                      usuario: UserModel(
+                                      cliente: ClienteModel(
                                           email: emailController.text
                                               .toLowerCase(),
-                                          password: senhaController.text));
+                                          senha: senhaController.text));
                                   if (result) {
                                     Get.offNamed(PageRoutes.home);
                                   }
                                 }
-                              */
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
