@@ -24,17 +24,7 @@ class SignInScreen extends StatelessWidget {
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFF6233),
-                  Color(0xFFFFD000),
-                ],
-                begin: FractionalOffset(0.0, 0.0),
-                end: FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-          ),
+          decoration: linearColor,
           child: Align(
             alignment: Alignment.center,
             child: SingleChildScrollView(

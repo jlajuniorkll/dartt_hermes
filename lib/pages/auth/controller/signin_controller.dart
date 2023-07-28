@@ -2,6 +2,7 @@ import 'package:dartt_hermes/models/cliente.dart';
 import 'package:dartt_hermes/page_routes/app_routes.dart';
 import 'package:dartt_hermes/pages/auth/repository/signin_repository.dart';
 import 'package:dartt_hermes/pages/auth/result/auth_result.dart';
+import 'package:dartt_hermes/services/commom_results.dart';
 import 'package:dartt_hermes/services/loading_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,8 +17,37 @@ class SigninController extends GetxController {
   final GlobalKey<FormState> formKeyFiliacao = GlobalKey<FormState>();
   final GlobalKey<FormState> formKeyConfirm = GlobalKey<FormState>();
 
+  final searchController = TextEditingController();
+  RxString searchTitle = ''.obs;
+
   ClienteModel cliente = ClienteModel();
   ClienteModel? clienteLogado;
+  List<ClienteModel> allUser = [];
+  List<ClienteModel> allUserFiltered = [];
+  final List<String> listCivil = <String>[
+    'Solteiro(a)',
+    'Separado(a)',
+    'Casado(a)',
+    'União Estável',
+    'Viúvo(a)'
+  ];
+
+  String _searchUser = '';
+  String get searchUser => _searchUser;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // função do getx
+    debounce(searchTitle, (_) => filterByTitle(),
+        time: const Duration(milliseconds: 600));
+    getAllUser();
+  }
+
+  set searchUser(String value) {
+    _searchUser = value;
+    update();
+  }
 
   void setLoading(bool value) {
     isLoading = value;
@@ -31,6 +61,11 @@ class SigninController extends GetxController {
 
   void setClienteLogado(ClienteModel value) {
     clienteLogado = value;
+    update();
+  }
+
+  void setCivilOcurrency(String value) {
+    cliente.civil = value;
     update();
   }
 
@@ -58,13 +93,14 @@ class SigninController extends GetxController {
     return loginSucesso;
   }
 
-  /*Future<void> getAllUser({bool? injection}) async {
+  Future<void> getAllUser({bool? injection}) async {
     if (injection == false) setLoading(true);
-    GenericsResult<UserModel> userResult = await userRepository.getAllUser();
+    GenericsResult<ClienteModel> userResult = await userRepository.getAllUser();
     setLoading(false);
 
     userResult.when(success: (data) {
       allUser.assignAll(data);
+      filterByTitle();
     }, error: (message) {
       Get.snackbar(
         "Tente novamente",
@@ -77,14 +113,14 @@ class SigninController extends GetxController {
         barBlur: 0,
       );
     });
-  }*/
+  }
 
   Future<void> addCliente({bool signinForm = false}) async {
     setLoading(true);
     if (signinForm) {
-      cliente.typeUser = "Administrador";
-    } else {
       cliente.typeUser = "Cliente";
+    } else {
+      cliente.typeUser = "Administrador";
     }
 
     final resultSignup = await userRepository.signUp(cliente: cliente);
@@ -136,16 +172,46 @@ class SigninController extends GetxController {
     setLoading(false);
   }*/
 
-  /*List<UserModel> get filteredUser {
-    final List<UserModel> filteredUser = [];
-    if (searchUser.isEmpty) {
-      filteredUser.addAll(allUser);
+  /*List<ClienteModel> get allUserFiltered {
+    final List<ClienteModel> allUserFiltereds = [];
+    if (searchTitle.value.isEmpty) {
+      allUserFiltereds.addAll(allUser);
     } else {
-      filteredUser.addAll(allUser.where((element) =>
-          element.name!.toLowerCase().contains(searchUser.toLowerCase())));
+      allUserFiltereds.addAll(allUser.where((element) => element.nome!
+          .toLowerCase()
+          .contains(searchTitle.value.toLowerCase())));
     }
-    return filteredUser;
+    return allUserFiltereds;
   }*/
+
+  void filterByTitle() {
+    allUserFiltered.clear();
+    if (searchTitle.value.isNotEmpty) {
+      /* allUserFiltered.addAll(allUser.where((e) =>
+          e.nome!.toUpperCase().contains(searchTitle.value.toUpperCase())));*/
+      allUserFiltered.addAll(allUser.where((cliente) =>
+          cliente.nome!
+              .toUpperCase()
+              .contains(searchTitle.value.toUpperCase()) ||
+          cliente.cpf!.contains(searchTitle.value) ||
+          cliente.fone!.contains(searchTitle.value)));
+    } else {
+      allUserFiltered.addAll(allUser);
+    }
+    update();
+  }
+
+  void setIsActive(ClienteModel value) {
+    cliente = value;
+    cliente.active = !value.active;
+    updateActive();
+    update();
+  }
+
+  Future<void> updateActive() async {
+    await userRepository.updateActive(cliente: cliente);
+    getAllUser();
+  }
 
   /*Future<void> resetUser(String email) async {
     await userRepository.resetUser(email: email);

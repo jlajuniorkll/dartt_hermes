@@ -16,6 +16,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLines;
   final GlobalKey<FormFieldState>? formFieldKey;
   final void Function(String?)? onChanged;
+  final IconData? iconSuffix;
 
   const CustomTextField({
     Key? key,
@@ -33,6 +34,7 @@ class CustomTextField extends StatefulWidget {
     this.autCorrect = true,
     this.maxLines = 1,
     this.formFieldKey,
+    this.iconSuffix,
   }) : super(key: key);
 
   @override
@@ -65,6 +67,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         autocorrect: widget.autCorrect,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
             prefixIcon: Icon(widget.icon),
             suffixIcon: widget.isSecret
                 ? IconButton(
@@ -76,7 +80,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     icon: isObscure
                         ? const Icon(Icons.visibility)
                         : const Icon(Icons.visibility_off))
-                : null,
+                : widget.iconSuffix != null
+                    ? Icon(widget.iconSuffix)
+                    : null,
             labelText: widget.label,
             isDense: true,
             border:

@@ -23,12 +23,14 @@ ClienteModel _$ClienteModelFromJson(Map<String, dynamic> json) => ClienteModel(
       fone: json['fone'] as String?,
       email: json['email'] as String?,
       obs: json['obs'] as String?,
-      saldo: (json['saldo'] as num?)?.toDouble(),
+      saldo: json['saldo'] == null
+          ? null
+          : MovimentosModel.fromJson(json['saldo'] as Map<String, dynamic>),
       numero: json['numero'] as String?,
-    )
-      ..senha = json['senha'] as String?
-      ..senhaConfirm = json['senhaConfirm'] as String?
-      ..typeUser = json['typeUser'] as String?;
+      senha: json['senha'] as String?,
+      senhaConfirm: json['senhaConfirm'] as String?,
+      active: json['active'] as bool? ?? true,
+    )..typeUser = json['typeUser'] as String?;
 
 Map<String, dynamic> _$ClienteModelToJson(ClienteModel instance) =>
     <String, dynamic>{
@@ -53,4 +55,5 @@ Map<String, dynamic> _$ClienteModelToJson(ClienteModel instance) =>
       'obs': instance.obs,
       'saldo': instance.saldo,
       'typeUser': instance.typeUser,
+      'active': instance.active,
     };

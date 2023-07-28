@@ -20,3 +20,36 @@ abstract class CustomColors {
 }
 
 const colorPrimaryClient = Color.fromARGB(255, 255, 98, 0);
+
+const linearColor = BoxDecoration(
+    gradient: LinearGradient(
+        colors: [
+          Color(0xFFFF6233),
+          Color(0xFFFFD000),
+        ],
+        begin: FractionalOffset(0.0, 0.0),
+        end: FractionalOffset(1.0, 0.0),
+        stops: [0.0, 1.0],
+        tileMode: TileMode.clamp));
+
+const boxLinear = BoxDecoration(
+    gradient: LinearGradient(
+        colors: [
+          Color(0xFFFF6233),
+          Color(0xFFFFD000),
+        ],
+        begin: FractionalOffset(0.0, 0.0),
+        end: FractionalOffset(1.0, 0.0),
+        stops: [0.0, 1.0],
+        tileMode: TileMode.clamp),
+    borderRadius: BorderRadius.vertical(bottom: Radius.circular(60)));
+
+const linearOrange = LinearGradient(
+    colors: [
+      Color(0xFFFF6233),
+      Color(0xFFFFD000),
+    ],
+    begin: FractionalOffset(0.0, 0.0),
+    end: FractionalOffset(1.0, 0.0),
+    stops: [0.0, 1.0],
+    tileMode: TileMode.clamp);

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartt_hermes/models/movimento.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cliente.g.dart';
@@ -24,8 +25,9 @@ class ClienteModel {
   String? senha;
   String? senhaConfirm;
   String? obs;
-  double? saldo;
+  MovimentosModel? saldo;
   String? typeUser;
+  bool active;
 
   ClienteModel(
       {this.id,
@@ -47,7 +49,8 @@ class ClienteModel {
       this.saldo,
       this.numero,
       this.senha,
-      this.senhaConfirm});
+      this.senhaConfirm,
+      this.active = true});
 
   factory ClienteModel.fromJson(Map<String, dynamic> json) =>
       _$ClienteModelFromJson(json);

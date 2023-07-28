@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartt_hermes/models/cliente.dart';
 import 'package:dartt_hermes/pages/auth/result/auth_result.dart';
+import 'package:dartt_hermes/services/commom_results.dart';
 import 'package:dartt_hermes/services/util_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -59,6 +60,34 @@ class UserRepository {
       // await _loadCurrentUser(firebaseUser: result.user);
     } on FirebaseAuthException catch (e) {
       return AuthResult.error(utilServices.getErrorString(e.code));
+    }
+  }
+
+  Future<GenericsResult<ClienteModel>> getAllUser() async {
+    try {
+      final QuerySnapshot snapUsers =
+          await fireRef.where('typeUser', isNotEqualTo: 'Administrador').get();
+
+      if (snapUsers.docs.isNotEmpty) {
+        List<ClienteModel> data =
+            snapUsers.docs.map((d) => ClienteModel.fromDocument(d)).toList();
+        return GenericsResult<ClienteModel>.success(data);
+      } else {
+        return GenericsResult.error('Não existem usuários cadastrados!');
+      }
+    } catch (e) {
+      return GenericsResult.error(
+          'Erro ao recuperar os dados do servidor -Usuario-');
+    }
+  }
+
+  // editar canais
+  Future<void> updateActive({required ClienteModel cliente}) async {
+    try {
+      await fireRef.doc(cliente.id).update(cliente.toJson());
+    } catch (e) {
+      // ignore: avoid_print
+      print(e.toString());
     }
   }
 }

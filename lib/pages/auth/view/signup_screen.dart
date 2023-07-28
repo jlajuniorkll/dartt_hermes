@@ -1,4 +1,3 @@
-import 'package:dartt_hermes/page_routes/app_routes.dart';
 import 'package:dartt_hermes/pages/auth/components/confirm_screen.dart';
 import 'package:dartt_hermes/pages/auth/components/dados_screen.dart';
 import 'package:dartt_hermes/pages/auth/components/endereco_screen.dart';
@@ -94,7 +93,6 @@ class SignUpScreen extends StatelessWidget {
         if (controller.formKeyConfirm.currentState!.validate()) {
           controller.formKeyConfirm.currentState!.save();
           controller.addCliente(signinForm: true);
-          Get.offNamed(PageRoutes.home);
         }
         break;
     }
